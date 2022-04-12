@@ -16,16 +16,12 @@ public class Ticker {
     }
 
     public void incWorthByPercent(double percentage){
-        System.out.println("STOCK WORTH BEFORE IS " + stockWorth);
         double incAmt = stockWorth * percentage;
         stockWorth += incAmt;
-        System.out.println("STOCK WORTH IS NOW " + stockWorth);
     }
 
     public void incWorthByDollar(double dollarAmt){
-        System.out.println("STOCK WORTH BEFORE IS " + stockWorth);
         this.stockWorth += dollarAmt;
-        System.out.println("STOCK WORTH IS NOW " + stockWorth);
     }
 
     public void decWorthByPercent(double percentage){

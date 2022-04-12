@@ -13,7 +13,8 @@ public class StockAnalyzer {
             evaluateFile(fileScanner);
         }
         catch (FileNotFoundException e){
-            System.out.println(e);
+            System.out.println("The file specified could not be found. Please ensure the file is located in the" +
+                    "same directory as the src directory.");
         }
     }
     private void evaluateFile(FileReader newFile){
@@ -54,70 +55,100 @@ public class StockAnalyzer {
                 }
             }
 
+            for(Investor person : investorList){
+                //ALPHABETICALLY
+                System.out.println(person.getResults());
+            }
+
+        }
+        catch (NumberFormatException e){
+            System.out.println("Syntax Error: Please ensure the correct syntax of number amounts.");
+            System.exit(1);
+        }
+        catch (ArrayIndexOutOfBoundsException e){
+            System.out.println("Syntax Error: Invalid line provided.");
+            System.exit(1);
+        }
+        catch (IllegalArgumentException e){
+            System.out.println(e.getMessage());
+            System.exit(1);
         }
         catch (IOException e){
-            System.out.println(e);
-        }
-        for(Investor person : investorList){
-            //ALPHABETICALLY
-            System.out.println(person.getResults());
+            System.out.println("Error: File could not be read.");
         }
     }
 
     private void initTicker(String tickerName, double tickerWorth){
-        Ticker newTicker = new Ticker(tickerName, tickerWorth);
-        tickerList.add(newTicker);
+        if(getTicker(tickerName) == null) {
+            Ticker newTicker = new Ticker(tickerName, tickerWorth);
+            tickerList.add(newTicker);
+        }
+        else {
+            System.out.println("Error: Ticker: " + tickerName + " already initialized");
+        }
     }
 
-    private void investorTransaction(String investorName, String action, int stockAmt, String tickerName){
+    private void investorTransaction(String investorName, String action, int stockAmt, String tickerName) throws IllegalArgumentException{
 
         Investor currInvestor = getInvestor(investorName);
         Ticker currTicker = getTicker(tickerName);
 
         if(currInvestor == null){
-            System.out.println("Setting up new Investor");
             Investor newInvestor = new Investor(investorName);
             investorList.add(newInvestor);
             currInvestor = newInvestor;
         }
 
-        if(action.equals("BUY")){
-            currInvestor.incBought(currTicker.getStockWorth() * stockAmt);
-            currInvestor.addStock(new Stock(currTicker, stockAmt));
-        }
-        else if(action.equals("SELL")){
-            //CHECK IF INVESTOR HAS ENOUGH STOCK
-            currInvestor.incSold(currTicker.getStockWorth() * stockAmt);
-            currInvestor.remStock(currTicker, stockAmt);
-        }
-    }
-
-    private void dollarChange(String tickerName, String action, String stockChange){
-        Ticker currTicker = getTicker(tickerName);
-
-        if(stockChange.contains("$")){
-            double dollarAmt = Math.round(Double.parseDouble(stockChange.replace("$", ""))
-                    * 100.0) / 100.0;
-            if(action.equals("UP")) {
-                currTicker.incWorthByDollar(dollarAmt);
+        try {
+            if (action.equals("BUY")) {
+                currInvestor.incBought(currTicker.getStockWorth() * stockAmt);
+                currInvestor.addStock(new Stock(currTicker, stockAmt));
+            } else if (action.equals("SELL")) {
+                //CHECK IF INVESTOR HAS ENOUGH STOCK
+                currInvestor.incSold(currTicker.getStockWorth() * stockAmt);
+                currInvestor.remStock(currTicker, stockAmt);
             }
-            else if(action.equals("DOWN")){
-                currTicker.decWorthByDollar(dollarAmt);
-            }
+        }
+        catch (NullPointerException e){
+            throw new IllegalArgumentException("Ticker provided was not initialized");
         }
     }
 
-    private void percentChange(String tickerName, String action, String stockChange){
+    private void dollarChange(String tickerName, String action, String stockChange) throws IllegalArgumentException{
+        Ticker currTicker = getTicker(tickerName);
+        if(currTicker != null) {
+            if (stockChange.contains("$")) {
+                double dollarAmt = Math.round(Double.parseDouble(stockChange.replace("$", ""))
+                        * 100.0) / 100.0;
+                if (action.equals("UP")) {
+                    currTicker.incWorthByDollar(dollarAmt);
+                } else if (action.equals("DOWN")) {
+                    currTicker.decWorthByDollar(dollarAmt);
+                }
+            }
+        }
+        else {
+            throw new IllegalArgumentException("Ticker provided was not initialized");
+        }
+    }
+
+    private void percentChange(String tickerName, String action, String stockChange) throws NullPointerException{
         Ticker currTicker = getTicker(tickerName);
 
-        if(stockChange.contains("%")){
-            double percentChange = (Double.parseDouble(stockChange.replace("%", ""))/100);;
-            if(action.equals("UP")) {
-                currTicker.incWorthByPercent(percentChange);
+        try {
+            if (stockChange.contains("%")) {
+                double percentChange = (Double.parseDouble(stockChange.replace("%", "")) / 100);
+                ;
+                if (action.equals("UP")) {
+                    currTicker.incWorthByPercent(percentChange);
+                } else if (action.equals("DOWN")) {
+                    currTicker.decWorthByPercent(percentChange);
+                }
             }
-            else if(action.equals("DOWN")){
-                currTicker.decWorthByPercent(percentChange);
-            }
+        }
+        catch(NullPointerException e){
+            System.out.println("Ticker provided was not initialized.");
+            throw e;
         }
     }
 
