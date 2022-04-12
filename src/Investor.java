@@ -18,11 +18,11 @@ public class Investor {
     }
 
     public double getAmtBought() {
-        return amtBought;
+        return Math.round(amtBought * 100.0) / 100.0;
     }
 
     public double getAmtSold() {
-        return amtSold;
+        return Math.round(amtSold * 100.0) / 100.0;
     }
 
     public double getCurrStockAmt() {
@@ -30,12 +30,12 @@ public class Investor {
         for( Stock stock : this.currStock){
             currAmt += stock.getStockWorth();
         }
-        currAmt += this.amtSold;
+        currAmt += getAmtSold();
         return currAmt;
     }
 
     private double getDifference(){
-        return ((getCurrStockAmt() - amtBought)/amtBought)*100;
+        return Math.round((((getCurrStockAmt() - amtBought)/amtBought)*100.0) * 100.0) / 100.0;
     }
 
     public void incBought(double amt){
@@ -53,7 +53,13 @@ public class Investor {
     public void remStock(Ticker ticker, int stockAmt){
         for(Stock stock: this.currStock){
             if(stock.getTicker().equals(ticker)){
-                stock.remStock(stockAmt);
+                if(stock.getStockAmt() >= stockAmt) {
+                    stock.remStock(stockAmt);
+                }
+                else{
+                    throw new IllegalArgumentException("Error: Invalid stock amount provided. Investor: " + this.name +
+                            " is attempting to sell more stock than they have.");
+                }
             }
         }
 
@@ -61,7 +67,7 @@ public class Investor {
 
     public String getResults(){
 
-        return (this.name + " SPENT $" + this.amtBought + " AND ENDED WITH $" + getCurrStockAmt() + ", A " +
+        return (this.name + " SPENT $" + getAmtBought() + " AND ENDED WITH $" + getCurrStockAmt() + ", A " +
                 getDifference() + "% RETURN.");
     }
 

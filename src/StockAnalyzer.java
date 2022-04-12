@@ -1,5 +1,7 @@
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class StockAnalyzer {
     private ArrayList<Investor> investorList = new ArrayList<Investor>();
@@ -51,6 +53,9 @@ public class StockAnalyzer {
                     System.out.println("NONE");
                 }
             }
+
+            //Sorts investors by name
+            investorList.sort((investor1, investor2) -> investor1.getName().compareToIgnoreCase(investor2.getName()));
 
             for(Investor person : investorList){
                 //ALPHABETICALLY

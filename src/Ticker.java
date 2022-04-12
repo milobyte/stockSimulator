@@ -4,7 +4,7 @@ public class Ticker {
 
     public Ticker(String name, double stockWorth) {
         this.name = name;
-        this.stockWorth = stockWorth;
+        this.stockWorth =  Math.round(stockWorth * 100.0) / 100.0;
     }
 
     public String getName() {
@@ -16,20 +16,20 @@ public class Ticker {
     }
 
     public void incWorthByPercent(double percentage){
-        double incAmt = stockWorth * percentage;
+        double incAmt =  Math.round((stockWorth * percentage) * 100.0) / 100.0;
         stockWorth += incAmt;
     }
 
     public void incWorthByDollar(double dollarAmt){
-        this.stockWorth += dollarAmt;
+        this.stockWorth +=  Math.round(dollarAmt * 100.0) / 100.0;;
     }
 
     public void decWorthByPercent(double percentage){
-        double incAmt = stockWorth * percentage;
-        stockWorth -= incAmt;
+        double decAmt =  Math.round((stockWorth * percentage) * 100.0) / 100.0;
+        stockWorth -= decAmt;
     }
 
     public void decWorthByDollar(double dollarAmt){
-        this.stockWorth -= dollarAmt;
+        this.stockWorth -= Math.round(dollarAmt * 100.0) / 100.0;;
     }
 }
