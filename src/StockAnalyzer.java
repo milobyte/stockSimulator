@@ -1,29 +1,22 @@
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 
 public class StockAnalyzer {
     private ArrayList<Investor> investorList = new ArrayList<Investor>();
     private ArrayList<Ticker> tickerList = new ArrayList<Ticker>();
-    public StockAnalyzer(String filename){
-        try {
-            FileReader fileScanner = new FileReader(filename);
-            evaluateFile(fileScanner);
-        }
-        catch (FileNotFoundException e){
-            System.out.println("The file specified could not be found. Please ensure the file is located in the" +
-                    "same directory as the src directory.");
-        }
+    private BufferedReader br;
+
+    public StockAnalyzer(BufferedReader br){
+        this.br = br;
     }
-    private void evaluateFile(FileReader newFile){
+
+    public void evaluateFile(){
         String investorName = "";
         String actionVar = "";
         String tickerName = "";
         int stockAmt = 0;
         String stockChange = "";
-        try (BufferedReader br = new BufferedReader(newFile)) {
+        try {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] lineParts = line.split(" ");
@@ -49,6 +42,10 @@ public class StockAnalyzer {
                     else if(stockChange.contains("$")) {
                         dollarChange(tickerName, actionVar, stockChange);
                     }
+                    else{
+                        System.out.println("Syntax Error: % or $ amount not specified.");
+                        return;
+                    }
                 }
                 else{
                     System.out.println("NONE");
@@ -63,15 +60,12 @@ public class StockAnalyzer {
         }
         catch (NumberFormatException e){
             System.out.println("Syntax Error: Please ensure the correct syntax of number amounts.");
-            System.exit(1);
         }
         catch (ArrayIndexOutOfBoundsException e){
             System.out.println("Syntax Error: Invalid line provided.");
-            System.exit(1);
         }
         catch (IllegalArgumentException e){
             System.out.println(e.getMessage());
-            System.exit(1);
         }
         catch (IOException e){
             System.out.println("Error: File could not be read.");
@@ -110,7 +104,7 @@ public class StockAnalyzer {
             }
         }
         catch (NullPointerException e){
-            throw new IllegalArgumentException("Ticker provided was not initialized");
+            throw new IllegalArgumentException("Error: Ticker provided was not initialized");
         }
     }
 
