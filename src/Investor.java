@@ -14,6 +14,8 @@ public class Investor {
     private double amtSold;
     /** The list that contains all the Stocks associated with this Investor*/
     private ArrayList<Stock> currStock;
+    /** A double representing 100 for mathematical purposes */
+    private static final double hundredVar = 100.0;
 
     /**
      * The default constructor used to initialize an Investor.
@@ -42,7 +44,7 @@ public class Investor {
      * @return the amount of money used to buy Stock by the Investor.
      **/
     public double getAmtBought() {
-        return Math.round(amtBought * 100.0) / 100.0;
+        return Math.round(amtBought * hundredVar) / hundredVar;
     }
 
     /**
@@ -51,7 +53,7 @@ public class Investor {
      * @return the amount of money gained by selling Stock.
      **/
     public double getAmtSold() {
-        return Math.round(amtSold * 100.0) / 100.0;
+        return Math.round(amtSold * hundredVar) / hundredVar;
     }
 
     /**
@@ -76,7 +78,7 @@ public class Investor {
      * @return the percent difference in the amount bought and the total revenue.
      **/
     private double getDifference(){
-        return Math.round((((getEndingTotal() - amtBought)/amtBought)*100.0) * 100.0) / 100.0;
+        return Math.round((((getEndingTotal() - amtBought)/amtBought)*hundredVar) * hundredVar) / hundredVar;
     }
 
     /**

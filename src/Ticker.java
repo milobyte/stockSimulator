@@ -8,6 +8,8 @@ public class Ticker {
     private String name;
     /** the amount of money this Ticker's stock is worth */
     private double stockWorth;
+    /** A double representing 100 for mathematical purposes */
+    private static final double hundredVar = 100.0;
 
     /**
      * The constructor for initializing a new Ticker
@@ -16,7 +18,7 @@ public class Ticker {
      */
     public Ticker(String name, double stockWorth) {
         this.name = name;
-        this.stockWorth =  Math.round(stockWorth * 100.0) / 100.0;
+        this.stockWorth =  Math.round(stockWorth * hundredVar) / hundredVar;
     }
 
     /**
@@ -40,7 +42,7 @@ public class Ticker {
      * @param percentage the percentage of increase in the Stock worth
      */
     public void incWorthByPercent(double percentage){
-        double incAmt =  Math.round((stockWorth * percentage) * 100.0) / 100.0;
+        double incAmt =  Math.round((stockWorth * percentage) * hundredVar) / hundredVar;
         stockWorth += incAmt;
     }
 
@@ -49,7 +51,7 @@ public class Ticker {
      * @param dollarAmt the dollar amount of increase in the Stock worth
      */
     public void incWorthByDollar(double dollarAmt){
-        this.stockWorth +=  Math.round(dollarAmt * 100.0) / 100.0;;
+        this.stockWorth +=  Math.round(dollarAmt * hundredVar) / hundredVar;;
     }
 
     /**
@@ -57,7 +59,7 @@ public class Ticker {
      * @param percentage the percentage of decrease in the Stock worth
      */
     public void decWorthByPercent(double percentage){
-        double decAmt =  Math.round((stockWorth * percentage) * 100.0) / 100.0;
+        double decAmt =  Math.round((stockWorth * percentage) * hundredVar) / hundredVar;
         stockWorth -= decAmt;
     }
 
@@ -66,6 +68,6 @@ public class Ticker {
      * @param dollarAmt the dollar amount of decrease in the Stock worth
      */
     public void decWorthByDollar(double dollarAmt){
-        this.stockWorth -= Math.round(dollarAmt * 100.0) / 100.0;;
+        this.stockWorth -= Math.round(dollarAmt * hundredVar) / hundredVar;;
     }
 }

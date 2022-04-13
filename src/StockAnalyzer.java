@@ -13,6 +13,8 @@ public class StockAnalyzer {
     private ArrayList<Ticker> tickerList = new ArrayList<Ticker>();
     /** The reader used to read each command passed in by line*/
     private BufferedReader br;
+    /** A double representing 100 for mathematical purposes */
+    private static final double hundredVar = 100.0;
 
     /**
      * The default constructor used to initialize the BufferedReader
@@ -154,7 +156,7 @@ public class StockAnalyzer {
         if(currTicker != null) {
             if (stockChange.contains("$")) {
                 double dollarAmt = Math.round(Double.parseDouble(stockChange.replace("$", ""))
-                        * 100.0) / 100.0;
+                        * hundredVar) / hundredVar;
                 if (action.equals("UP")) {
                     currTicker.incWorthByDollar(dollarAmt);
                 } else if (action.equals("DOWN")) {
@@ -179,7 +181,7 @@ public class StockAnalyzer {
 
         try {
             if (stockChange.contains("%")) {
-                double percentChange = (Double.parseDouble(stockChange.replace("%", "")) / 100);
+                double percentChange = (Double.parseDouble(stockChange.replace("%", "")) / hundredVar);
                 ;
                 if (action.equals("UP")) {
                     currTicker.incWorthByPercent(percentChange);
