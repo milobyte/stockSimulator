@@ -61,7 +61,7 @@ public class Investor {
      * @return the amount of money the Investor made in the end.
      **/
     public double getEndingTotal() {
-        int currAmt = 0;
+        double currAmt = 0;
         for( Stock stock : this.currStock){
             currAmt += stock.getStockWorth();
         }
@@ -148,6 +148,10 @@ public class Investor {
                 "the Ticker provided.");
     }
 
+    /**
+     * Returns a String representing the amount of money an Investor spent versus the total amount they ended with.
+     * @return a String representing the amount of money an Investor spent versus the total amount they ended with.
+     */
     public String getResults(){
 
         return (this.name + " SPENT $" + getAmtBought() + " AND ENDED WITH $" + getEndingTotal() + ", A " +
