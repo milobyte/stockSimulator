@@ -1,20 +1,35 @@
 import java.io.*;
 
+/**
+ * A driver used to initialize and run a StockAnalyzer on a series of commands passed in as input.
+ * @author Miles Stanley
+ * @version 1.0
+ */
 public class Driver {
     private static final int ZERO = 0;
     private static final int ONE = 1;
 
+    /**
+     * The main method that executes the program from a file or default unit tests
+     *
+     * @param args - contains the arguments passed into the program. File should coorelate with the first argument
+     **/
     public static void main(String[] args) {
-        if(args.length == ONE){
+        if(args.length == ONE){ //EVALUATE FROM FILE
             String file = args[ZERO];
             evaluateFromFile(file);
         }
-        else {
+        else { //RUN UNIT TESTS
             System.out.println("RUNNING UNIT TESTS\n--------------------------");
             runUnitTests();
         }
     }
 
+    /**
+     * A helper method to initialize and run a StockAnalyzer from a file.
+     *
+     * @param fileName - the name of the file
+     **/
     private static void evaluateFromFile(String fileName){
         try {
             File initFile = new File(fileName);
@@ -28,6 +43,11 @@ public class Driver {
         }
     }
 
+    /**
+     * A helper method to initialize and run a StockAnalyzer from a string.
+     *
+     * @param testString - the String representing a series of commands for a StockAnalyzer
+     **/
     private static void runFromString(String testString){
         try {
             InputStream testStream = new ByteArrayInputStream(testString.getBytes("UTF-8"));
@@ -41,6 +61,9 @@ public class Driver {
         }
     }
 
+    /**
+     * A helper method to run a series of unit tests that test the constraints of the StockAnalyzer
+     **/
     private static void runUnitTests() {
         //Normal Test
         runFromString("INITIAL PRICE GOOG $100\n" +

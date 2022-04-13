@@ -50,11 +50,23 @@ public class Investor {
         currStock.add(newStock);
     }
 
+    public void incStock(Ticker ticker, int stockAmt){
+        for(Stock stock: this.currStock){
+            if(stock.getTicker().equals(ticker)){ //If Stock already owned
+                stock.incStock(stockAmt);
+                return;
+            }
+        }
+        //Add new Stock if the Stock has not been initialized
+        addStock(new Stock(ticker, stockAmt));
+    }
+
     public void remStock(Ticker ticker, int stockAmt){
         for(Stock stock: this.currStock){
             if(stock.getTicker().equals(ticker)){
                 if(stock.getStockAmt() >= stockAmt) {
                     stock.remStock(stockAmt);
+                    return;
                 }
                 else{
                     throw new IllegalArgumentException("Error: Invalid stock amount provided. Investor: " + this.name +
@@ -62,7 +74,8 @@ public class Investor {
                 }
             }
         }
-
+        throw new IllegalArgumentException("Error: Invalid Ticker provided. This Investor has no Stock with " +
+                "the Ticker provided.");
     }
 
     public String getResults(){

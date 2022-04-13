@@ -1,17 +1,33 @@
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
+/**
+ * An object used to perform transactions and cost changes related to a simulated Stock market.
+ * @author Miles Stanley
+ * @version 1.0
+ */
 public class StockAnalyzer {
+    /** The list that stores each Investor found in the input*/
     private ArrayList<Investor> investorList = new ArrayList<Investor>();
+    /** The list that stores each Ticker found in the input*/
     private ArrayList<Ticker> tickerList = new ArrayList<Ticker>();
+    /** The reader used to read each command passed in by line*/
     private BufferedReader br;
 
+    /**
+     * The default constructor used to initialize the BufferedReader
+     *
+     * @param br - The reader used to read each command passed in by line
+     **/
     public StockAnalyzer(BufferedReader br){
         this.br = br;
     }
 
+    /**
+     * The main method used to evaluate a series of commands regarding the simulated Stock market. This method calls
+     * a series of other methods that initialize and edit Stock, Ticker, and Investor objects. At the end, an
+     * alphabetically sorted list of results will be printed for each Investor.
+     **/
     public void evaluateFile(){
         String investorName = "";
         String actionVar = "";
@@ -77,6 +93,12 @@ public class StockAnalyzer {
         }
     }
 
+    /**
+     * A helper method used to initialize a new Ticker based on name and Stock worth provided
+     *
+     * @param tickerName - the name of the Ticker
+     * @param tickerWorth - the worth of any stocks pertaining to said Ticker
+     **/
     private void initTicker(String tickerName, double tickerWorth){
         if(getTicker(tickerName) == null) {
             Ticker newTicker = new Ticker(tickerName, tickerWorth);
@@ -87,6 +109,14 @@ public class StockAnalyzer {
         }
     }
 
+    /**
+     * A helper method used to execute BUY or SELL commands associated with an Investor
+     *
+     * @param investorName - the name of an Investor
+     * @param action - the action associated with the Investor (BUY or SELL)
+     * @param stockAmt - the amount of Stock that an Investor is buying or selling
+     * @param tickerName - the name of the Ticker associated with the Investor's Stock
+     **/
     private void investorTransaction(String investorName, String action, int stockAmt, String tickerName) throws IllegalArgumentException{
 
         Investor currInvestor = getInvestor(investorName);
@@ -101,9 +131,8 @@ public class StockAnalyzer {
         try {
             if (action.equals("BUY")) {
                 currInvestor.incBought(currTicker.getStockWorth() * stockAmt);
-                currInvestor.addStock(new Stock(currTicker, stockAmt));
+                currInvestor.incStock(currTicker, stockAmt);
             } else if (action.equals("SELL")) {
-                //CHECK IF INVESTOR HAS ENOUGH STOCK
                 currInvestor.incSold(currTicker.getStockWorth() * stockAmt);
                 currInvestor.remStock(currTicker, stockAmt);
             }
@@ -113,6 +142,13 @@ public class StockAnalyzer {
         }
     }
 
+    /**
+     * A helper method to change the value of a Ticker's stock value by dollar amount.
+     *
+     * @param tickerName - the name of the Ticker associated with the changing Stock.
+     * @param action - The action associated with the change of a Ticker's stock (UP or DOWN).
+     * @param stockChange - the amount (in terms of $) that the Stock's value will change.
+     **/
     private void dollarChange(String tickerName, String action, String stockChange) throws IllegalArgumentException{
         Ticker currTicker = getTicker(tickerName);
         if(currTicker != null) {
@@ -131,6 +167,13 @@ public class StockAnalyzer {
         }
     }
 
+    /**
+     * A helper method to change the value of a Ticker's stock value by percentage.
+     *
+     * @param tickerName - the name of the Ticker associated with the changing Stock.
+     * @param action - The action associated with the change of a Ticker's stock (UP or DOWN).
+     * @param stockChange - the amount (in terms of %) that the Stock's value will change.
+     **/
     private void percentChange(String tickerName, String action, String stockChange) throws NullPointerException{
         Ticker currTicker = getTicker(tickerName);
 
@@ -151,6 +194,13 @@ public class StockAnalyzer {
         }
     }
 
+    /**
+     * A helper method to get an Investor whose information has been saved.
+     *
+     * @param name - the name associated with the Investor
+     *
+     * @return the Investor associated with the name parameter, or NULL if the Investor has not been saved.
+     **/
     private Investor getInvestor(String name){
         for(Investor person: this.investorList){
             if(person.getName().equals(name)){
@@ -160,6 +210,13 @@ public class StockAnalyzer {
         return null;
     }
 
+    /**
+     * A helper method to get a Ticker whose information has been saved.
+     *
+     * @param name - the name associated with the Ticker
+     *
+     * @return the Ticker associated with the name parameter, or NULL if the Ticker has not been saved.
+     **/
     private Ticker getTicker(String name){
         for(Ticker ticker: this.tickerList){
             if(ticker.getName().equals(name)){
