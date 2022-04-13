@@ -57,9 +57,14 @@ public class Stock {
         this.stockAmt += stockAmt;
     }
 
+    /**
+     * A helper method to decrease the amount of Stock that an Investor owns.
+     *
+     * @param stockAmt - the amount of Stock to decrease by
+     **/
     public void remStock(int stockAmt){
         this.stockAmt -= stockAmt;
-        if(stockAmt < 0){
+        if(stockAmt < 0){ //If more stock was sold than available, set to 0
             this.stockAmt = 0;
         }
     }
